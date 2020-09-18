@@ -1,9 +1,18 @@
-from werkzeug.security import safe_str_cmp
+from marshmallow import ValidationError
+
 from user.model import UserModel
+from user.validation import UserCredentials
 
 
-def authenticate(username, password):
-    user = UserModel.get_by_email(username)
+def authenticate(email, password):
+    schema = UserCredentials()
+
+    try:
+        schema.load({'email': email, 'password': password})
+    except ValidationError:
+        return
+
+    user = UserModel.get_by_email(email)
 
     if user and user.check_password(password):
         return user
