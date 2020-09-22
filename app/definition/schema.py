@@ -11,3 +11,6 @@ class DefinitionSchema(Schema):
     examples = fields.List(fields.Str())
     similarTo = fields.List(fields.Str())
     verbGroup = fields.List(fields.Str())
+    entails = fields.List(fields.Str())
+    also = fields.List(fields.Str())
+    inCategory = fields.List(fields.Str())

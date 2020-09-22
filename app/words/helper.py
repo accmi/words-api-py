@@ -13,7 +13,7 @@ class PronunciationField(fields.Field):
         data,
         **kwargs
     ):
-        if isinstance(value, PronunciationSchema) or isinstance(value, str):
+        if value.get('all', None) or isinstance(value, str):
             return value
         else:
             raise ValidationError('Invalid input type')

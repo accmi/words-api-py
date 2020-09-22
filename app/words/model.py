@@ -1,5 +1,5 @@
 from db import DB
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from .helper import PronunciationSchema
 
 
@@ -31,3 +31,10 @@ class WordModel(DB.Model):
         except IntegrityError as err:
             DB.session.rollback()
             return None, err.statement, 500
+
+    @classmethod
+    def get_word_by_name(cls, name):
+        try:
+            return cls.query.filter_by(word=name).first(), None
+        except SQLAlchemyError as err:
+            return None, err.__dict__['orig']

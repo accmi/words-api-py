@@ -8,21 +8,23 @@ from definition.model import DefinitionModel
 
 
 class Search(Resource):
-    @staticmethod
-    def get():
+    def get(self):
         args = request.args
         word = args['search']
-        url = f'https://wordsapiv1.p.rapidapi.com/words/{word}'
-        headers = {
-            'x-rapidapi-host': os.getenv('RAPID_API_HOST'),
-            'x-rapidapi-key': os.getenv('RAPID_API_KEY')
-        }
 
-        try:
-            res = request_get(url, headers=headers)
-            return res.json(), 200
-        except RequestException:
-            return RequestException.strerror, 400
+        value, err = WordModel.get_word_by_name(word)
+
+        if err:
+            return {'error': err}, 400
+        elif value:
+            try:
+                schema = WordSchema()
+                res = schema.dump(value)
+                return res, 200
+            except ValidationError as err:
+                return {'error': err.messages}, 500
+
+        return self.request_word(word)
 
     @staticmethod
     def post():
@@ -62,3 +64,19 @@ class Search(Resource):
                     return {'error': err}, 500
 
         return {'message': 'added'}, 201
+
+    @classmethod
+    def request_word(cls, word):
+        url = f'https://wordsapiv1.p.rapidapi.com/words/{word}'
+        headers = {
+            'x-rapidapi-host': os.getenv('RAPID_API_HOST'),
+            'x-rapidapi-key': os.getenv('RAPID_API_KEY')
+        }
+
+        print(f'searching "{word}" in rapid api')
+
+        try:
+            res = request_get(url, headers=headers)
+            return res.json(), 200
+        except RequestException:
+            return RequestException.strerror, 400

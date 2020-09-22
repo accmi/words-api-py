@@ -9,7 +9,8 @@ def authenticate(email, password):
 
     try:
         schema.load({'email': email, 'password': password})
-    except ValidationError:
+    except ValidationError as err:
+        # return err.messages, 400
         return
 
     user = UserModel.get_by_email(email)
