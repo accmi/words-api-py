@@ -7,7 +7,7 @@ from .model import WordModel
 from definition.model import DefinitionModel
 
 
-class Search(Resource):
+class WordResource(Resource):
     def get(self):
         args = request.args
         word = args['search']

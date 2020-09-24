@@ -4,13 +4,14 @@ from .helper import PronunciationSchema
 
 
 class WordModel(DB.Model):
-    __tablename__ = 'words'
+    __tablename__ = 'word'
 
     id = DB.Column(DB.Integer, primary_key=True)
     word = DB.Column(DB.String)
     frequency = DB.Column(DB.Float)
     pronunciation = DB.Column(DB.String)
-    results = DB.relationship('DefinitionModel', backref='words')
+    results = DB.relationship('DefinitionModel', backref='word')
+    list_id = DB.Column(DB.Integer, DB.ForeignKey('list.id'))
 
     def __init__(self, word, frequency, pronunciation):
         self.word = word

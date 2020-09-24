@@ -6,8 +6,8 @@ from flask_restful import Api
 from config import AppConfig
 from db import DB
 from security import authenticate, identity
-from user.resource import SignUp
-from words.resource import Search
+
+from routes import Routes
 
 app = Flask(__name__)
 
@@ -29,8 +29,7 @@ def create_table():
 jwt = JWT(app=app, authentication_handler=authenticate, identity_handler=identity)
 
 # routes
-api.add_resource(SignUp, '/signup')
-api.add_resource(Search, '/search')
+routes = Routes(api)
 
 
 if __name__ == '__main__':

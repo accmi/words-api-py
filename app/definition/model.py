@@ -12,7 +12,7 @@ class DefinitionModel(DB.Model):
     type_of = DB.Column(DB.ARRAY(DB.String))
     has_types = DB.Column(DB.ARRAY(DB.String))
     examples = DB.Column(DB.ARRAY(DB.String))
-    parent_id = DB.Column(DB.Integer, DB.ForeignKey('words.id'))
+    parent_id = DB.Column(DB.Integer, DB.ForeignKey('word.id'))
     selected = DB.Column(DB.Boolean)
 
     def __init__(self,
