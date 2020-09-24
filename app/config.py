@@ -22,5 +22,5 @@ class AppConfig:
         self.app.secret_key = self.SECRET_KEY
         self.app.config['SQLALCHEMY_DATABASE_URI'] = self.connection_string
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-        self.app.config['JWT_AUTH_URL_RULE'] = '/signin'
+        self.app.config['JWT_AUTH_URL_RULE'] = '/api/signin'
         self.app.config['JWT_AUTH_USERNAME_KEY'] = 'email'

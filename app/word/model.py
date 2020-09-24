@@ -7,11 +7,11 @@ class WordModel(DB.Model):
     __tablename__ = 'word'
 
     id = DB.Column(DB.Integer, primary_key=True)
-    word = DB.Column(DB.String)
+    word = DB.Column(DB.String, unique=True)
     frequency = DB.Column(DB.Float)
     pronunciation = DB.Column(DB.String)
-    results = DB.relationship('DefinitionModel', backref='word')
     list_id = DB.Column(DB.Integer, DB.ForeignKey('list.id'))
+    results = DB.relationship('DefinitionModel', backref='word')
 
     def __init__(self, word, frequency, pronunciation):
         self.word = word
@@ -23,6 +23,15 @@ class WordModel(DB.Model):
             self.pronunciation = pronunciation.get('all', None)
         else:
             self.pronunciation = ''
+
+    def json(self):
+        return {
+            'id': self.id,
+            'word': self.word,
+            'frequency': self.frequency,
+            'pronunciation': self.pronunciation,
+            'results': [item.json() for item in self.results.all()]
+        }
 
     def save(self):
         try:

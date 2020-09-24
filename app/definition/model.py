@@ -34,6 +34,17 @@ class DefinitionModel(DB.Model):
         self.parent_id = parent
         self.selected = selected
 
+    def json(self):
+        return {
+            'id': self.id,
+            'value': self.value,
+            'part_of_speech': self.part_of_speech,
+            'synonyms': self.synonyms,
+            'type_of': self.type_of,
+            'has_types': self.has_types,
+            'examples': self.examples,
+        }
+
     def save(self):
         try:
             DB.session.add(self)
